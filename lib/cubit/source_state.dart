@@ -1,4 +1,4 @@
-import '../models/source_response.dart';
+import '../models/source.dart';
 
 abstract class SourceState {}
 
@@ -7,9 +7,9 @@ class SourceInitial extends SourceState {}
 class SourceLoading extends SourceState {}
 
 class SourceSuccess extends SourceState {
-  final SourceResponse sourceResponse;
+  final List<Source> sources;
 
-  SourceSuccess(this.sourceResponse);
+  SourceSuccess(this.sources);
 }
 
 class SourceError extends SourceState {

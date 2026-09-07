@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
+import '../abdulrahman/categories_screen.dart';
+
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final List<String> categories = [
+    final categories = [
       'General',
       'Business',
       'Technology',
@@ -16,78 +18,234 @@ class HomeScreen extends StatelessWidget {
     ];
 
     return Scaffold(
-      backgroundColor: const Color(0xFF0F0F0F),
+      backgroundColor:
+      Theme.of(context).scaffoldBackgroundColor,
 
-      appBar: AppBar(
-        backgroundColor: const Color(0xFF0F0F0F),
-        elevation: 0,
-        title: const Text(
-          'VOX',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 28,
-            fontWeight: FontWeight.bold,
-            letterSpacing: 2,
+// ================= DRAWER =================
+      drawer: Drawer(
+        child: SafeArea(
+          child: Column(
+            children: [
+              const SizedBox(height: 20),
+
+              Container(
+                width: 70,
+                height: 70,
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius:
+                  BorderRadius.circular(6),
+                ),
+                child: Image.asset(
+                  'assets/vox_logo.jpg',
+                  fit: BoxFit.contain,
+                ),
+              ),
+
+              const SizedBox(height: 12),
+
+              Text(
+                'VOX',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context)
+                      .colorScheme
+                      .onSurface,
+                  letterSpacing: 1.5,
+                ),
+              ),
+
+              const SizedBox(height: 30),
+
+              const Divider(),
+
+              ListTile(
+                leading:
+                const Icon(Icons.home_outlined),
+                title: const Text('Home'),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+
+              ListTile(
+                leading:
+                const Icon(Icons.language),
+                title:
+                const Text('English / العربية'),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+
+              ListTile(
+                leading: const Icon(
+                  Icons.dark_mode_outlined,
+                ),
+                title: const Text(
+                  'Light / Dark Mode',
+                ),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ],
           ),
         ),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.menu,
-              color: Colors.white,
-            ),
-          ),
-        ],
       ),
 
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
+// ================= BODY =================
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 20,
+            vertical: 16,
+          ),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment:
+            CrossAxisAlignment.start,
             children: [
+// ================= HEADER =================
+              Row(
+                children: [
+                  Builder(
+                    builder: (context) {
+                      return IconButton(
+                        padding: EdgeInsets.zero,
+                        icon: const Icon(
+                          Icons.menu,
+                          size: 28,
+                        ),
+                        onPressed: () {
+                          Scaffold.of(context)
+                              .openDrawer();
+                        },
+                      );
+                    },
+                  ),
 
-              const Text(
+                  const Spacer(),
+
+                  Container(
+                    width: 42,
+                    height: 42,
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius:
+                      BorderRadius.circular(4),
+                    ),
+                    child: Image.asset(
+                      'assets/vox_logo.jpg',
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+
+                  const SizedBox(width: 10),
+                  Text(
+                    'VOX',
+                    style: TextStyle(
+                      fontSize: 23,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1.5,
+                      color: Theme.of(context)
+                          .colorScheme
+                          .onSurface,
+                    ),
+                  ),
+
+                  const Spacer(),
+
+                  IconButton(
+                    onPressed: () {},
+                    icon: const Icon(
+                      Icons.search,
+                      size: 27,
+                    ),
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 30),
+
+// ================= LATEST NEWS =================
+              Text(
                 'Latest News',
                 style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 28,
+                  fontSize: 30,
                   fontWeight: FontWeight.bold,
+                  color: Theme.of(context)
+                      .colorScheme
+                      .onSurface,
                 ),
               ),
 
               const SizedBox(height: 20),
 
+// ================= CATEGORIES =================
               SizedBox(
-                height: 45,
+                height: 42,
                 child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
+                  scrollDirection:
+                  Axis.horizontal,
                   itemCount: categories.length,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      margin: const EdgeInsets.only(right: 10),
-                      child: ElevatedButton(
-                        onPressed: () {
-                         // هنضيف هنا Navigation للـCategories
-                         // بعد ما ندمج شغل Abdulrahman.
+                  itemBuilder:
+                      (context, index) {
+                    return Padding(
+                      padding:
+                      const EdgeInsets.only(
+                        right: 10,
+                      ),
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                              const CategoriesScreen(),
+                            ),
+                          );
                         },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: index == 0
-                              ? const Color(0xFF5CC8E8)
-                              : const Color(0xFF1A1A1A),
-                          foregroundColor: index == 0
-                              ? Colors.black
-                              : Colors.white,
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
+                        child: Container(
+                          padding:
+                          const EdgeInsets.symmetric(
+                            horizontal: 18,
+                            vertical: 10,
                           ),
-                        ),
-                        child: Text(
-                          categories[index],
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w600,
+                          decoration:
+                          BoxDecoration(
+                            color: index == 0
+                                ? const Color(
+                              0xFF5CC8E8,
+                            )
+                                : Theme.of(context)
+                                .colorScheme
+                                .surface,
+                            borderRadius:
+                            BorderRadius.circular(
+                              20,
+                            ),
+                            border: Border.all(
+                              color: index == 0
+                                  ? const Color(
+                                0xFF5CC8E8,
+                              )
+                                  : Colors.black12,
+                            ),
+                          ),
+                          child: Text(
+                            categories[index],
+                            style: TextStyle(
+                              color: index == 0
+                                  ? Colors.black
+                                  : Theme.of(context)
+                                  .colorScheme
+                                  .onSurface,
+                              fontWeight:
+                              FontWeight.w600,
+                            ),
                           ),
                         ),
                       ),
@@ -97,28 +255,42 @@ class HomeScreen extends StatelessWidget {
               ),
 
               const SizedBox(height: 25),
-
+// ================= NEWS CARDS =================
               _newsCard(
-                title: 'Latest News',
+                context,
+                title:
+                'Latest News From Around The World',
                 source: 'VOX News',
-                time: 'Today',
+                time: '2 hours ago',
+                image:
+                'https://images.unsplash.com/photo-1504711434969-e33886168f5c',
               ),
 
-              const SizedBox(height: 15),
+              const SizedBox(height: 18),
 
               _newsCard(
-                title: 'Technology News',
-                source: 'VOX News',
-                time: 'Today',
+                context,
+                title:
+                'Technology Continues To Shape Our Future',
+                source: 'Tech News',
+                time: '4 hours ago',
+                image:
+                'https://images.unsplash.com/photo-1518770660439-4636190af475',
               ),
 
-              const SizedBox(height: 15),
+              const SizedBox(height: 18),
 
               _newsCard(
-                title: 'Business News',
-                source: 'VOX News',
-                time: 'Today',
+                context,
+                title:
+                'Global Business And Market Updates',
+                source: 'Business News',
+                time: '6 hours ago',
+                image:
+                'https://images.unsplash.com/photo-1520607162513-77705c0f0d4a',
               ),
+
+              const SizedBox(height: 30),
             ],
           ),
         ),
@@ -126,73 +298,118 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _newsCard({
-    required String title,
-    required String source,
-    required String time,
-  }) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(18),
-      decoration: BoxDecoration(
-        color: const Color(0xFF1A1A1A),
-        borderRadius: BorderRadius.circular(15),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            height: 180,
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: Colors.white12,
-              borderRadius: BorderRadius.circular(12),
+// ================= NEWS CARD =================
+
+  Widget _newsCard(
+      BuildContext context, {
+        required String title,
+        required String source,
+        required String time,
+        required String image,
+      }) {
+    return InkWell(
+      borderRadius:
+      BorderRadius.circular(18),
+      onTap: () {},
+      child: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: Theme.of(context)
+              .colorScheme
+              .surface,
+          borderRadius:
+          BorderRadius.circular(18),
+        ),
+        clipBehavior:
+        Clip.antiAlias,
+        child: Column(
+          crossAxisAlignment:
+          CrossAxisAlignment.start,
+          children: [
+// Image
+            Image.network(
+              image,
+              width: double.infinity,
+              height: 200,
+              fit: BoxFit.cover,
+              errorBuilder:
+                  (context, error, stackTrace) {
+                return Container(
+                  width: double.infinity,
+                  height: 200,
+                  color:
+                  const Color(0xFFE5E5E5),
+                  child: const Icon(
+                    Icons
+                        .image_not_supported_outlined,
+                    size: 50,
+                    color:
+                    Color(0xFF5CC8E8),
+                  ),
+                );
+              },
             ),
-            child: const Center(
-              child: Icon(
-                Icons.article_outlined,
-                color: Color(0xFF5CC8E8),
-                size: 55,
+
+            Padding(
+              padding:
+              const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment:
+                CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    maxLines: 2,
+                    overflow:
+                    TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight:
+                      FontWeight.bold,
+                      height: 1.3,
+                      color:
+                      Theme.of(context)
+                          .colorScheme
+                          .onSurface,
+                    ),
+                  ),
+
+                  const SizedBox(height: 12),
+
+                  Row(
+                    children: [
+                      Text(
+                        source,
+                        style:
+                        const TextStyle(
+                          color:
+                          Color(0xFF5CC8E8),
+                          fontWeight:
+                          FontWeight.w600,
+                          fontSize: 13,
+                        ),
+                      ),
+
+                      const Spacer(),
+                      Text(
+                        time,
+                        style: TextStyle(
+                          color:
+                          Theme.of(context)
+                              .colorScheme
+                              .onSurface
+                              .withOpacity(
+                              0.55),
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
-          ),
-
-          const SizedBox(height: 15),
-
-          Text(
-            title,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-
-          const SizedBox(height: 10),
-
-          Row(
-            children: [
-              Text(
-                source,
-                style: const TextStyle(
-                  color: Color(0xFF5CC8E8),
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-
-              const SizedBox(width: 10),
-
-              Text(
-                time,
-                style: const TextStyle(
-                  color: Colors.white54,
-                  fontSize: 13,
-                ),
-              ),
-            ],
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
