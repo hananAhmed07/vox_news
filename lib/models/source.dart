@@ -26,4 +26,16 @@ class Source {
     language = json['language'];
     country = json['country'];
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'description': description,
+      'url': url,
+      'category': category,
+      'language': language,
+      'country': country,
+    };
+  }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../api/api_manager.dart';
-import '../models/source_response.dart';
 import 'source_state.dart';
 
 class SourceCubit extends Cubit<SourceState> {
@@ -14,13 +14,13 @@ class SourceCubit extends Cubit<SourceState> {
     emit(SourceLoading());
 
     try {
-      SourceResponse? response = await ApiManager.getSources(
+      final response = await ApiManager.getSources(
         categoryId,
         language,
       );
 
-      if (response != null) {
-        emit(SourceSuccess(response));
+      if (response?.sources != null) {
+        emit(SourceSuccess(response!.sources!));
       } else {
         emit(SourceError('No sources found'));
       }
@@ -28,4 +28,5 @@ class SourceCubit extends Cubit<SourceState> {
       emit(SourceError(e.toString()));
     }
   }
+}
 }

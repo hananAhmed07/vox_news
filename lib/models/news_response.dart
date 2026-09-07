@@ -16,10 +16,12 @@ class NewsResponse {
     totalResults = json['totalResults'];
 
     if (json['articles'] != null) {
-      articles = [];
+      articles = <Article>[];
 
       for (var article in json['articles']) {
-        articles!.add(Article.fromJson(article));
+        articles!.add(
+          Article.fromJson(article),
+        );
       }
     }
   }

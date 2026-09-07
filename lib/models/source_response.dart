@@ -13,10 +13,12 @@ class SourceResponse {
     status = json['status'];
 
     if (json['sources'] != null) {
-      sources = [];
+      sources = <Source>[];
 
       for (var source in json['sources']) {
-        sources!.add(Source.fromJson(source));
+        sources!.add(
+          Source.fromJson(source),
+        );
       }
     }
   }

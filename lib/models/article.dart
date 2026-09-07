@@ -1,4 +1,5 @@
 class Article {
+  SourceInfo? source;
   String? author;
   String? title;
   String? description;
@@ -8,6 +9,7 @@ class Article {
   String? content;
 
   Article({
+    this.source,
     this.author,
     this.title,
     this.description,
@@ -18,6 +20,10 @@ class Article {
   });
 
   Article.fromJson(Map<String, dynamic> json) {
+    source = json['source'] != null
+        ? SourceInfo.fromJson(json['source'])
+        : null;
+
     author = json['author'];
     title = json['title'];
     description = json['description'];
@@ -25,5 +31,20 @@ class Article {
     urlToImage = json['urlToImage'];
     publishedAt = json['publishedAt'];
     content = json['content'];
+  }
+}
+
+class SourceInfo {
+  String? id;
+  String? name;
+
+  SourceInfo({
+    this.id,
+    this.name,
+  });
+
+  SourceInfo.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
   }
 }
