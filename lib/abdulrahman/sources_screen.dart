@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'news_list_screen.dart';
+import '../cubit/source_cubit.dart';
+import '../cubit/source_state.dart';
 
 class SourcesScreen extends StatelessWidget {
   final String categoryId;
@@ -11,150 +15,198 @@ class SourcesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<Map<String, String>> sources = [
-      {
-        'name': 'BBC News',
-        'id': 'bbc-news',
-      },
-      {
-        'name': 'CNN',
-        'id': 'cnn',
-      },
-      {
-        'name': 'TechCrunch',
-        'id': 'techcrunch',
-      },
-      {
-        'name': 'Wired',
-        'id': 'wired',
-      },
-    ];
-
-    return Scaffold(
-      backgroundColor: const Color(0xFF0F0F0F),
-
-      appBar: AppBar(
+    return BlocProvider(
+      create: (context) => SourceCubit()
+        ..getSources(
+          categoryId: categoryId.toLowerCase(),
+          language: 'en',
+        ),
+      child: Scaffold(
         backgroundColor: const Color(0xFF0F0F0F),
-        elevation: 0,
-        title: const Text(
-          'Sources',
-          style: TextStyle(
+
+        appBar: AppBar(
+          backgroundColor: const Color(0xFF0F0F0F),
+          elevation: 0,
+          title: const Text(
+            'Sources',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          iconTheme: const IconThemeData(
             color: Colors.white,
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
           ),
         ),
-        iconTheme: const IconThemeData(
-          color: Colors.white,
-        ),
-      ),
 
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              categoryId,
-              style: const TextStyle(
-                color: Color(0xFF5CC8E8),
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
+        body: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                categoryId,
+                style: const TextStyle(
+                  color: Color(0xFF5CC8E8),
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
-            ),
 
-            const SizedBox(height: 10),
+              const SizedBox(height: 10),
 
-            const Text(
-              'Choose a News Source',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
+              const Text(
+                'Choose a News Source',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
 
-            const SizedBox(height: 10),
+              const SizedBox(height: 10),
 
-            const Text(
-              'Select a source to read its latest news.',
-              style: TextStyle(
-                color: Colors.white70,
-                fontSize: 16,
+              const Text(
+                'Select a source to read its latest news.',
+                style: TextStyle(
+                  color: Colors.white70,
+                  fontSize: 16,
+                ),
               ),
-            ),
 
-            const SizedBox(height: 25),
+              const SizedBox(height: 25),
 
-            Expanded(
-              child: ListView.builder(
-                itemCount: sources.length,
-                itemBuilder: (context, index) {
-                  final source = sources[index];
+              Expanded(
+                child: BlocBuilder<SourceCubit, SourceState>(
+                  builder: (context, state) {
+// Loading
+                    if (state is SourceLoading) {
+                      return const Center(
+                        child: CircularProgressIndicator(
+                          color: Color(0xFF5CC8E8),
+                        ),
+                      );
+                    }
 
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 15),
-                    child: InkWell(
-                      borderRadius: BorderRadius.circular(15),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => NewsListScreen(
-                              sourceId: source['id']!,
-                              sourceName: source['name']!,
+// Error
+                    if (state is SourceError) {
+                      return Center(
+                        child: Text(
+                          state.message,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
+                        ),
+                      );
+                    }
+
+// Success
+                    if (state is SourceSuccess) {
+                      final sources =
+                          state.sourceResponse.sources ?? [];
+
+                      if (sources.isEmpty) {
+                        return const Center(
+                          child: Text(
+                            'No sources found.',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
                             ),
                           ),
                         );
-                      },
-                      child: Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.all(20),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF1A1A1A),
-                          borderRadius: BorderRadius.circular(15),
-                          border: Border.all(
-                            color: Colors.white12,
-                          ),
-                        ),
-                        child: Row(
-                          children: [
-                            const CircleAvatar(
-                              radius: 25,
-                              backgroundColor: Color(0xFF5CC8E8),
-                              child: Icon(
-                                Icons.public,
-                                color: Colors.black,
-                              ),
+                      }
+
+                      return ListView.builder(
+                        itemCount: sources.length,
+                        itemBuilder: (context, index) {
+                          final source = sources[index];
+                          return Padding(
+                            padding: const EdgeInsets.only(
+                              bottom: 15,
                             ),
+                            child: InkWell(
+                              borderRadius: BorderRadius.circular(15),
+                              onTap: () {
+                                if (source.id == null) {
+                                  return;
+                                }
 
-                            const SizedBox(width: 15),
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        NewsListScreen(
+                                          sourceId: source.id!,
+                                          sourceName:
+                                          source.name ?? '',
+                                        ),
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                width: double.infinity,
+                                padding: const EdgeInsets.all(20),
+                                decoration: BoxDecoration(
+                                  color:
+                                  const Color(0xFF1A1A1A),
+                                  borderRadius:
+                                  BorderRadius.circular(15),
+                                  border: Border.all(
+                                    color: Colors.white12,
+                                  ),
+                                ),
+                                child: Row(
+                                  children: [
+                                    const CircleAvatar(
+                                      radius: 25,
+                                      backgroundColor:
+                                      Color(0xFF5CC8E8),
+                                      child: Icon(
+                                        Icons.public,
+                                        color: Colors.black,
+                                      ),
+                                    ),
 
-                            Expanded(
-                              child: Text(
-                                source['name']!,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w600,
+                                    const SizedBox(width: 15),
+
+                                    Expanded(
+                                      child: Text(
+                                        source.name ?? '',
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 18,
+                                          fontWeight:
+                                          FontWeight.w600,
+                                        ),
+                                      ),
+                                    ),
+
+                                    const Icon(
+                                      Icons.arrow_forward_ios,
+                                      color:
+                                      Color(0xFF5CC8E8),
+                                      size: 18,
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
+                          );
+                        },
+                      );
+                    }
 
-                            const Icon(
-                              Icons.arrow_forward_ios,
-                              color: Color(0xFF5CC8E8),
-                              size: 18,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
-                },
+                    // Initial
+                    return const SizedBox();
+                  },
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
