@@ -307,9 +307,12 @@ class _SourcesScreenState extends State<SourcesScreen> {
                               itemBuilder: (context, index) {
                                 final source = sources[index];
 
+                                final String? sourceUrl = source.url;
+
                                 return _sourceCard(
                                   name: source.name ?? 'Unknown',
                                   sourceId: source.id ?? '',
+                                  sourceUrl: sourceUrl,
                                 );
                               },
                             ),
@@ -385,6 +388,7 @@ class _SourcesScreenState extends State<SourcesScreen> {
   Widget _sourceCard({
     required String name,
     required String sourceId,
+    String? sourceUrl,
   }) {
     final bool isSelected =
         selectedSourceId == sourceId;
@@ -496,6 +500,52 @@ class _SourcesScreenState extends State<SourcesScreen> {
         ),
       ),
     );
+  }
+
+  Widget _buildSourceLogo(String? sourceUrl) {
+    if (sourceUrl == null || sourceUrl.isEmpty) {
+      return const Icon(
+        Icons.public,
+        color: Color(0xFF5CC8E8),
+        size: 50,
+      );
+    }
+
+    try {
+      final uri = Uri.parse(sourceUrl);
+      final domain = uri.host;
+
+      if (domain.isEmpty) {
+        return const Icon(
+          Icons.public,
+          color: Color(0xFF5CC8E8),
+          size: 50,
+        );
+      }
+
+      final faviconUrl =
+          'https://www.google.com/s2/favicons?domain=$domain&sz=128';
+
+      return Image.network(
+        faviconUrl,
+        width: 55,
+        height: 55,
+        fit: BoxFit.contain,
+        errorBuilder: (context, error, stackTrace) {
+          return const Icon(
+            Icons.public,
+            color: Color(0xFF5CC8E8),
+            size: 50,
+          );
+        },
+      );
+    } catch (e) {
+      return const Icon(
+        Icons.public,
+        color: Color(0xFF5CC8E8),
+        size: 50,
+      );
+    }
   }
 
 

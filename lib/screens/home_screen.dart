@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../abdulrahman/categories_screen.dart';
 
+import '../l10n/app_localizations.dart';
+
 class HomeScreen extends StatelessWidget {
   final Future<void> Function(bool) onThemeChanged;
   final Future<void> Function(String) onLanguageChanged;
@@ -14,6 +16,8 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final l10n = AppLocalizations.of(context)!;
 
     final categories = [
       'General',
@@ -31,104 +35,304 @@ class HomeScreen extends StatelessWidget {
 
 // ================= DRAWER =================
       drawer: Drawer(
+        width: MediaQuery.of(context).size.width * 0.72,
+        backgroundColor: Colors.white,
         child: SafeArea(
           child: Column(
             children: [
-              const SizedBox(height: 20),
+              const SizedBox(height: 25),
 
-              Container(
-                width: 70,
-                height: 70,
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius:
-                  BorderRadius.circular(6),
-                ),
-                child: Image.asset(
-                  'assets/vox_logo.jpg',
-                  fit: BoxFit.contain,
-                ),
+              // VOX NEWS
+              Row(
+                children: [
+                  const SizedBox(width: 28),
+
+                  Container(
+                    width: 62,
+                    height: 62,
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFF5F5F5),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Image.asset(
+                      'assets/vox_logo.jpg',
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+
+                  const SizedBox(width: 18),
+
+                  const Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'VOX',
+                        style: TextStyle(
+                          color: Color(0xFF0F0F0F),
+                          fontSize: 25,
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: 1.5,
+                        ),
+                      ),
+                      Text(
+                        'NEWS',
+                        style: TextStyle(
+                          color: Color(0xFF0F0F0F),
+                          fontSize: 25,
+                          fontWeight: FontWeight.w500,
+                          letterSpacing: 2,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
 
-              const SizedBox(height: 12),
+              const SizedBox(height: 35),
 
-              Text(
-                'VOX',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context)
-                      .colorScheme
-                      .onSurface,
-                  letterSpacing: 1.5,
-                ),
+              const Divider(
+                height: 1,
+                color: Colors.black12,
               ),
 
-              const SizedBox(height: 30),
-
-              const Divider(),
-
-// ================= HOME =================
-              ListTile(
-                leading:
-                const Icon(Icons.home_outlined),
-                title: Text('Home'),
+              // HOME
+              InkWell(
                 onTap: () {
                   Navigator.pop(context);
                 },
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 28,
+                    vertical: 22,
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(
+                        Icons.home_outlined,
+                        color: Color(0xFF0F0F0F),
+                        size: 28,
+                      ),
+                      const SizedBox(width: 20),
+                      Text(
+                        l10n!.home,
+                        style: TextStyle(
+                          color: Color(0xFF0F0F0F),
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                          letterSpacing: 1.2,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
 
-// ================= LANGUAGE =================
-              ListTile(
-                leading:
-                const Icon(Icons.language),
-                title: Text('English / العربية'),
-                onTap: () async {
-                  final currentLanguage =
-                      Localizations.localeOf(context)
-                          .languageCode;
-
-                  final newLanguage =
-                  currentLanguage == 'en'
-                      ? 'ar'
-                      : 'en';
-
-                  await onLanguageChanged(
-                    newLanguage,
-                  );
-
-                  if (context.mounted) {
-                    Navigator.pop(context);
-                  }
-                },
+              const Divider(
+                height: 1,
+                color: Colors.black12,
               ),
 
-// ================= THEME =================
-              ListTile(
-                leading: Icon(
-                  Theme.of(context).brightness ==
-                      Brightness.dark
-                      ? Icons.light_mode_outlined
-                      : Icons.dark_mode_outlined,
-                ),
-                title: Text(
-                  Theme.of(context).brightness ==
-                      Brightness.dark
-                      ? 'Light Mode'
-                      : 'Dark Mode',
-                ),
-                onTap: () async {
-                  final isDark =
-                      Theme.of(context).brightness ==
-                          Brightness.dark;
+              const SizedBox(height: 25),
 
-                  await onThemeChanged(!isDark);
+              // THEME
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 28,
+                  vertical: 15,
+                ),
+                child: Row(
+                  children: [
+                    const Icon(
+                      Icons.wb_sunny_outlined,
+                      color: Color(0xFF0F0F0F),
+                      size: 30,
+                    ),
 
-                  if (context.mounted) {
-                    Navigator.pop(context);
-                  }
-                },
+                    const SizedBox(width: 20),
+
+                    const Expanded(
+                      child: Text(
+                        'THEME',
+                        style: TextStyle(
+                          color: Color(0xFF0F0F0F),
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                          letterSpacing: 1.2,
+                        ),
+                      ),
+                    ),
+
+                    // THEME TOGGLE
+                    Container(
+                      width: 82,
+                      height: 45,
+                      padding: const EdgeInsets.all(4),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFE5E5E5),
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: () {
+                                onThemeChanged(false);
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).brightness ==
+                                      Brightness.light
+                                      ? Colors.white
+                                      : Colors.transparent,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: const Center(
+                                  child: Icon(
+                                    Icons.wb_sunny_outlined,
+                                    color: Color(0xFF5CC8E8),
+                                    size: 22,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: () {
+                                onThemeChanged(true);
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).brightness ==
+                                      Brightness.dark
+                                      ? Colors.white
+                                      : Colors.transparent,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: const Center(
+                                  child: Icon(
+                                    Icons.nightlight_outlined,
+                                    color: Color(0xFF0F0F0F),
+                                    size: 21,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 10),
+
+              // LANGUAGE
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 28,
+                  vertical: 15,
+                ),
+                child: Row(
+                  children: [
+                    const Icon(
+                      Icons.language,
+                      color: Color(0xFF0F0F0F),
+                      size: 30,
+                    ),
+
+                    const SizedBox(width: 20),
+
+                    const Expanded(
+                      child: Text(
+                        'LANGUAGE',
+                        style: TextStyle(
+                          color: Color(0xFF0F0F0F),
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                          letterSpacing: 1.2,
+                        ),
+                      ),
+                    ),
+
+                    // LANGUAGE TOGGLE
+                    Container(
+                      width: 120,
+                      height: 45,
+                      padding: const EdgeInsets.all(4),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFE5E5E5),
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: () {
+                                onLanguageChanged('en');
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color:
+                                  Localizations.localeOf(context)
+                                      .languageCode ==
+                                      'en'
+                                      ? Colors.white
+                                      : Colors.transparent,
+                                  borderRadius:
+                                  BorderRadius.circular(22),
+                                ),
+                                child: const Center(
+                                  child: Text(
+                                    'EN',
+                                    style: TextStyle(
+                                      color: Color(0xFF2B7F91),
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: () {
+                                onLanguageChanged('ar');
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color:
+                                  Localizations.localeOf(context)
+                                      .languageCode ==
+                                      'ar'
+                                      ? Colors.white
+                                      : Colors.transparent,
+                                  borderRadius:
+                                  BorderRadius.circular(22),
+                                ),
+                                child: const Center(
+                                  child: Text(
+                                    'AR',
+                                    style: TextStyle(
+                                      color: Color(0xFF0F0F0F),
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
@@ -212,7 +416,7 @@ class HomeScreen extends StatelessWidget {
 
 // ================= LATEST NEWS =================
               Text(
-                'Latest News',
+                l10n.latestNews,
                 style: TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.bold,
@@ -309,18 +513,7 @@ class HomeScreen extends StatelessWidget {
 
               const SizedBox(height: 18),
 
-              _newsCard(
-                context,
-                title:
-                'Technology Continues To Shape Our Future',
-                source: 'Tech News',
-                time: '4 hours ago',
-                image:
-                'https://images.unsplash.com/photo-1518770660439-4636190af475',
-              ),
-
-              const SizedBox(height: 18),
-
+              // ================= NEWS CARD 3 =================
               _newsCard(
                 context,
                 title:
@@ -339,7 +532,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-// ================= NEWS CARD =================
+  // ================= NEWS CARD =================
   Widget _newsCard(
       BuildContext context, {
         required String title,
@@ -439,7 +632,8 @@ class HomeScreen extends StatelessWidget {
                               .colorScheme
                               .onSurface
                               .withOpacity(
-                              0.55),
+                            0.55,
+                          ),
                           fontSize: 12,
                         ),
                       ),
