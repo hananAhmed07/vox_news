@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../l10n/app_localizations.dart';
+
 class NewsDetailsScreen extends StatelessWidget {
   final String title;
   final String description;
@@ -36,6 +38,7 @@ class NewsDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: const Color(0xFF0F0F0F),
 
@@ -45,8 +48,8 @@ class NewsDetailsScreen extends StatelessWidget {
         iconTheme: const IconThemeData(
           color: Colors.white,
         ),
-        title: const Text(
-          'News Details',
+        title: Text(
+          l10n.newsDetails,
           style: TextStyle(
             color: Colors.white,
             fontSize: 22,
@@ -150,8 +153,8 @@ class NewsDetailsScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(15),
                   ),
                 ),
-                child: const Text(
-                  'Read Full Article',
+                child: Text(
+                  l10n.readFullArticle,
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,

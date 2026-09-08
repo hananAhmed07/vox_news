@@ -4,6 +4,8 @@ import '../abdulrahman/categories_screen.dart';
 
 import '../l10n/app_localizations.dart';
 
+import 'search_screen.dart';
+
 class HomeScreen extends StatelessWidget {
   final Future<void> Function(bool) onThemeChanged;
   final Future<void> Function(String) onLanguageChanged;
@@ -20,13 +22,13 @@ class HomeScreen extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
 
     final categories = [
-      'General',
-      'Business',
-      'Technology',
-      'Sports',
-      'Entertainment',
-      'Health',
-      'Science',
+      l10n.general,
+      l10n.business,
+      l10n.technology,
+      l10n.sports,
+      l10n.entertainment,
+      l10n.health,
+      l10n.science,
     ];
 
     return Scaffold(
@@ -403,7 +405,17 @@ class HomeScreen extends StatelessWidget {
                   const Spacer(),
 
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const SearchScreen(
+                            sourceId: 'bbc-news',
+                            sourceName: 'BBC News',
+                          ),
+                        ),
+                      );
+                    },
                     icon: const Icon(
                       Icons.search,
                       size: 27,

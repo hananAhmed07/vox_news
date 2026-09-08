@@ -34,4 +34,41 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get lightDarkMode => 'Light / Dark Mode';
+
+  @override
+  String get general => 'General';
+
+  @override
+  String get business => 'Business';
+
+  @override
+  String get technology => 'Technology';
+
+  @override
+  String get sports => 'Sports';
+
+  @override
+  String get entertainment => 'Entertainment';
+
+  @override
+  String get health => 'Health';
+
+  @override
+  String get science => 'Science';
+
+  @override
+  String get continueButton => 'Continue';
+
+  @override
+  String get searchNews => 'Search News';
+
+  @override
+  String get searchForNews => 'Search for news...';
+
+  @override
+  String get noNewsFound => 'No news found.';
+
+  @override
+  String get selectCategoryToDiscover =>
+      'Select a category to discover related news.';
 }

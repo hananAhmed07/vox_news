@@ -5,6 +5,8 @@ import '../cubit/source_cubit.dart';
 import '../cubit/source_state.dart';
 import '../abdulrahman/news_list_screen.dart';
 
+import '../l10n/app_localizations.dart';
+
 class SourcesScreen extends StatefulWidget {
   final String? categoryId;
   final Set<String>? selectedCategories;
@@ -25,14 +27,18 @@ class _SourcesScreenState extends State<SourcesScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     final String category = _getCategoryId();
 
+    final String language =
+        Localizations.localeOf(context).languageCode;
+
     return BlocProvider(
-      create: (_) =>
-      SourceCubit()
+      create: (_) => SourceCubit()
         ..getSources(
           categoryId: category,
-          language: 'en',
+          language: language,
         ),
       child: Scaffold(
         backgroundColor: const Color(0xFFF8F8F8),

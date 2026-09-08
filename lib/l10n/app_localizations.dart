@@ -151,6 +151,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Light / Dark Mode'**
   String get lightDarkMode;
+
+  /// No description provided for @general.
+  ///
+  /// In en, this message translates to:
+  /// **'General'**
+  String get general;
+
+  /// No description provided for @business.
+  ///
+  /// In en, this message translates to:
+  /// **'Business'**
+  String get business;
+
+  /// No description provided for @technology.
+  ///
+  /// In en, this message translates to:
+  /// **'Technology'**
+  String get technology;
+
+  /// No description provided for @sports.
+  ///
+  /// In en, this message translates to:
+  /// **'Sports'**
+  String get sports;
+
+  /// No description provided for @entertainment.
+  ///
+  /// In en, this message translates to:
+  /// **'Entertainment'**
+  String get entertainment;
+
+  /// No description provided for @health.
+  ///
+  /// In en, this message translates to:
+  /// **'Health'**
+  String get health;
+
+  /// No description provided for @science.
+  ///
+  /// In en, this message translates to:
+  /// **'Science'**
+  String get science;
+
+  /// No description provided for @continueButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get continueButton;
+
+  /// No description provided for @searchNews.
+  ///
+  /// In en, this message translates to:
+  /// **'Search News'**
+  String get searchNews;
+
+  /// No description provided for @searchForNews.
+  ///
+  /// In en, this message translates to:
+  /// **'Search for news...'**
+  String get searchForNews;
+
+  /// No description provided for @noNewsFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No news found.'**
+  String get noNewsFound;
+
+  /// No description provided for @selectCategoryToDiscover.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a category to discover related news.'**
+  String get selectCategoryToDiscover;
 }
 
 class _AppLocalizationsDelegate

@@ -7,5 +7,17 @@
   "readFullArticle": "Read Full Article",
   "chooseCategory": "Choose a Category",
   "englishArabic": "English / العربية",
-  "lightDarkMode": "Light / Dark Mode"
+  "lightDarkMode": "Light / Dark Mode",
+  "general": "General",
+  "business": "Business",
+  "technology": "Technology",
+  "sports": "Sports",
+  "entertainment": "Entertainment",
+  "health": "Health",
+  "science": "Science",
+  "continueButton": "Continue",
+  "searchNews": "Search News",
+  "searchForNews": "Search for news...",
+  "noNewsFound": "No news found.",
+  "selectCategoryToDiscover": "Select a category to discover related news."
 }

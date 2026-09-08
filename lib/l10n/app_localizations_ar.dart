@@ -34,4 +34,41 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get lightDarkMode => 'الوضع الفاتح / الداكن';
+
+  @override
+  String get general => 'عام';
+
+  @override
+  String get business => 'أعمال';
+
+  @override
+  String get technology => 'تكنولوجيا';
+
+  @override
+  String get sports => 'رياضة';
+
+  @override
+  String get entertainment => 'ترفيه';
+
+  @override
+  String get health => 'صحة';
+
+  @override
+  String get science => 'علوم';
+
+  @override
+  String get continueButton => 'متابعة';
+
+  @override
+  String get searchNews => 'بحث عن الأخبار';
+
+  @override
+  String get searchForNews => 'ابحث عن الأخبار...';
+
+  @override
+  String get noNewsFound => 'لا توجد أخبار.';
+
+  @override
+  String get selectCategoryToDiscover =>
+      'اختر تصنيفًا لاكتشاف الأخبار المتعلقة به.';
 }

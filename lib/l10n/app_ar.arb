@@ -7,5 +7,17 @@
   "readFullArticle": "قراءة المقال كاملًا",
   "chooseCategory": "اختر تصنيفًا",
   "englishArabic": "العربية / English",
-  "lightDarkMode": "الوضع الفاتح / الداكن"
+  "lightDarkMode": "الوضع الفاتح / الداكن",
+  "general": "عام",
+  "business": "أعمال",
+  "technology": "تكنولوجيا",
+  "sports": "رياضة",
+  "entertainment": "ترفيه",
+  "health": "صحة",
+  "science": "علوم",
+  "continueButton": "متابعة",
+  "searchNews": "بحث عن الأخبار",
+  "searchForNews": "ابحث عن الأخبار...",
+  "noNewsFound": "لا توجد أخبار.",
+  "selectCategoryToDiscover": "اختر تصنيفًا لاكتشاف الأخبار المتعلقة به."
 }

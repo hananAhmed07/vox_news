@@ -18,11 +18,16 @@ class NewsListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => NewsCubit()
-        ..getNewsBySourceId(
-          sourceId: sourceId,
-          language: 'en',
-        ),
+      create: (context) {
+        final language =
+            Localizations.localeOf(context).languageCode;
+
+        return NewsCubit()
+          ..getNewsBySourceId(
+            sourceId: sourceId,
+            language: language,
+          );
+      },
       child: Scaffold(
         backgroundColor: const Color(0xFF0F0F0F),
 
@@ -44,6 +49,7 @@ class NewsListScreen extends StatelessWidget {
 
         body: BlocBuilder<NewsCubit, NewsState>(
           builder: (context, state) {
+
 // Loading
             if (state is NewsLoading) {
               return const Center(
@@ -128,6 +134,8 @@ class NewsListScreen extends StatelessWidget {
                           crossAxisAlignment:
                           CrossAxisAlignment.start,
                           children: [
+
+// Image
                             if (article.urlToImage != null &&
                                 article.urlToImage!.isNotEmpty)
                               ClipRRect(
@@ -145,8 +153,7 @@ class NewsListScreen extends StatelessWidget {
                                       width: double.infinity,
                                       color: Colors.white12,
                                       child: const Icon(
-                                        Icons
-                                            .article_outlined,
+                                        Icons.article_outlined,
                                         color:
                                         Color(0xFF5CC8E8),
                                         size: 50,
@@ -176,6 +183,7 @@ class NewsListScreen extends StatelessWidget {
 
                             const SizedBox(height: 15),
 
+// Title
                             Text(
                               article.title ?? '',
                               style: const TextStyle(
@@ -187,6 +195,7 @@ class NewsListScreen extends StatelessWidget {
 
                             const SizedBox(height: 8),
 
+// Description
                             Text(
                               article.description ?? '',
                               maxLines: 2,
@@ -199,7 +208,7 @@ class NewsListScreen extends StatelessWidget {
                             ),
 
                             const SizedBox(height: 12),
-
+                            // Source
                             Text(
                               sourceName,
                               style: const TextStyle(

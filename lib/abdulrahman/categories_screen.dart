@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../screens/source_screen.dart';
 
+import '../l10n/app_localizations.dart';
+
 class CategoriesScreen extends StatelessWidget {
   const CategoriesScreen({super.key});
 
@@ -38,6 +40,7 @@ class CategoriesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: const Color(0xFF0F0F0F),
 
