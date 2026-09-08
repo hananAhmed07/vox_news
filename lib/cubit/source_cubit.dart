@@ -1,5 +1,4 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../api/api_manager.dart';
 import 'source_state.dart';
@@ -28,5 +27,4 @@ class SourceCubit extends Cubit<SourceState> {
       emit(SourceError(e.toString()));
     }
   }
-}
 }

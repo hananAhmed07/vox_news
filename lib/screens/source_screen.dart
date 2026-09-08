@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../cubit/source_cubit.dart';
 import '../cubit/source_state.dart';
-import 'home_screen.dart';
+import '../abdulrahman/news_list_screen.dart';
 
 class SourcesScreen extends StatefulWidget {
   final String? categoryId;
@@ -21,13 +21,15 @@ class SourcesScreen extends StatefulWidget {
 
 class _SourcesScreenState extends State<SourcesScreen> {
   String? selectedSourceId;
+  String? selectedSourceName;
 
   @override
   Widget build(BuildContext context) {
     final String category = _getCategoryId();
 
     return BlocProvider(
-      create: (_) => SourceCubit()
+      create: (_) =>
+      SourceCubit()
         ..getSources(
           categoryId: category,
           language: 'en',
@@ -35,7 +37,6 @@ class _SourcesScreenState extends State<SourcesScreen> {
       child: Scaffold(
         backgroundColor: const Color(0xFFF8F8F8),
 
-// ================= DRAWER =================
         drawer: const Drawer(
           child: SafeArea(
             child: Column(
@@ -75,14 +76,20 @@ class _SourcesScreenState extends State<SourcesScreen> {
         body: SafeArea(
           child: Column(
             children: [
-// ================= HEADER =================
+
+// =========================
+// TOP BAR
+// =========================
+
               Container(
                 height: 70,
                 width: double.infinity,
                 color: Colors.white,
-                padding: const EdgeInsets.symmetric(horizontal: 18),
+                padding:
+                const EdgeInsets.symmetric(horizontal: 18),
                 child: Row(
                   children: [
+
                     Builder(
                       builder: (context) {
                         return IconButton(
@@ -100,7 +107,6 @@ class _SourcesScreenState extends State<SourcesScreen> {
 
                     const SizedBox(width: 4),
 
-// VOX Logo
                     Container(
                       width: 38,
                       height: 38,
@@ -125,7 +131,6 @@ class _SourcesScreenState extends State<SourcesScreen> {
 
                     const Spacer(),
 
-// Profile
                     Container(
                       width: 42,
                       height: 42,
@@ -143,10 +148,14 @@ class _SourcesScreenState extends State<SourcesScreen> {
                 ),
               ),
 
-// ================= CONTENT =================
+// =========================
+// SOURCES
+// =========================
+
               Expanded(
                 child: BlocBuilder<SourceCubit, SourceState>(
                   builder: (context, state) {
+// LOADING
                     if (state is SourceLoading) {
                       return const Center(
                         child: CircularProgressIndicator(
@@ -155,13 +164,16 @@ class _SourcesScreenState extends State<SourcesScreen> {
                       );
                     }
 
+// ERROR
                     if (state is SourceError) {
                       return Center(
                         child: Padding(
                           padding: const EdgeInsets.all(25),
                           child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisAlignment:
+                            MainAxisAlignment.center,
                             children: [
+
                               const Icon(
                                 Icons.error_outline,
                                 color: Color(0xFF5CC8E8),
@@ -196,7 +208,8 @@ class _SourcesScreenState extends State<SourcesScreen> {
                                     language: 'en',
                                   );
                                 },
-                                style: ElevatedButton.styleFrom(
+                                style:
+                                ElevatedButton.styleFrom(
                                   backgroundColor:
                                   const Color(0xFF5CC8E8),
                                 ),
@@ -213,6 +226,7 @@ class _SourcesScreenState extends State<SourcesScreen> {
                       );
                     }
 
+// SUCCESS
                     if (state is SourceSuccess) {
                       final sources = state.sources;
 
@@ -227,7 +241,6 @@ class _SourcesScreenState extends State<SourcesScreen> {
                           ),
                         );
                       }
-
                       return SingleChildScrollView(
                         padding: const EdgeInsets.fromLTRB(
                           20,
@@ -239,7 +252,7 @@ class _SourcesScreenState extends State<SourcesScreen> {
                           crossAxisAlignment:
                           CrossAxisAlignment.start,
                           children: [
-// ================= TITLE =================
+
                             const Text(
                               'Sources',
                               style: TextStyle(
@@ -251,7 +264,6 @@ class _SourcesScreenState extends State<SourcesScreen> {
 
                             const SizedBox(height: 10),
 
-// ================= CATEGORY =================
                             Row(
                               children: [
                                 Container(
@@ -280,7 +292,6 @@ class _SourcesScreenState extends State<SourcesScreen> {
 
                             const SizedBox(height: 55),
 
-// ================= SOURCES GRID =================
                             GridView.builder(
                               shrinkWrap: true,
                               physics:
@@ -305,23 +316,30 @@ class _SourcesScreenState extends State<SourcesScreen> {
 
                             const SizedBox(height: 35),
 
-// ================= CONTINUE =================
                             SizedBox(
                               width: double.infinity,
                               height: 50,
                               child: ElevatedButton(
-                                onPressed: selectedSourceId == null
+                                onPressed:
+                                selectedSourceId == null
                                     ? null
                                     : () {
                                   Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) =>
-                                      const HomeScreen(),
+                                          NewsListScreen(
+                                            sourceId:
+                                            selectedSourceId!,
+                                            sourceName:
+                                            selectedSourceName ??
+                                                '',
+                                          ),
                                     ),
                                   );
                                 },
-                                style: ElevatedButton.styleFrom(
+                                style:
+                                ElevatedButton.styleFrom(
                                   backgroundColor:
                                   const Color(0xFF5CC8E8),
                                   disabledBackgroundColor:
@@ -360,7 +378,9 @@ class _SourcesScreenState extends State<SourcesScreen> {
     );
   }
 
-// ================= SOURCE CARD =================
+// ============================================================
+// SOURCE CARD
+// ============================================================
 
   Widget _sourceCard({
     required String name,
@@ -373,15 +393,19 @@ class _SourcesScreenState extends State<SourcesScreen> {
       onTap: () {
         setState(() {
           selectedSourceId = sourceId;
+          selectedSourceName = name;
         });
       },
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
+
         decoration: BoxDecoration(
           color: isSelected
               ? const Color(0xFF5CC8E8)
               : Colors.white,
+
           borderRadius: BorderRadius.circular(28),
+
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.04),
@@ -390,9 +414,14 @@ class _SourcesScreenState extends State<SourcesScreen> {
             ),
           ],
         ),
+
         child: Stack(
           children: [
-// ================= CHECK =================
+
+// =========================
+// CHECK ICON
+// =========================
+
             if (isSelected)
               Positioned(
                 top: 18,
@@ -415,7 +444,10 @@ class _SourcesScreenState extends State<SourcesScreen> {
                 ),
               ),
 
-// ================= CARD CONTENT =================
+// =========================
+// LOGO + NAME
+// =========================
+
             Center(
               child: Column(
                 mainAxisAlignment:
@@ -424,25 +456,16 @@ class _SourcesScreenState extends State<SourcesScreen> {
                   Container(
                     width: 105,
                     height: 105,
+                    padding: const EdgeInsets.all(18),
+
                     decoration: const BoxDecoration(
                       color: Color(0xFFF5F5F5),
                       shape: BoxShape.circle,
                     ),
-                    child: Center(
-                      child: Text(
-                        _getSourceShortName(name),
-                        textAlign: TextAlign.center,
-                        maxLines: 3,
-                        overflow:
-                        TextOverflow.ellipsis,
-                        style: TextStyle(
-                          color: isSelected
-                              ? const Color(0xFF168CA5)
-                              : const Color(0xFF303030),
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                    child: const Icon(
+                      Icons.public,
+                      color: Color(0xFF168CA5),
+                      size: 45,
                     ),
                   ),
 
@@ -475,7 +498,10 @@ class _SourcesScreenState extends State<SourcesScreen> {
     );
   }
 
-  // ================= CATEGORY =================
+
+// ============================================================
+// CATEGORY ID
+// ============================================================
 
   String _getCategoryId() {
     if (widget.categoryId != null &&
@@ -493,33 +519,9 @@ class _SourcesScreenState extends State<SourcesScreen> {
     return 'general';
   }
 
-  String _convertCategoryToApiValue(
-      String category) {
-    switch (category.toLowerCase()) {
-      case 'general':
-        return 'general';
-      case 'business':
-        return 'business';
-      case 'technology':
-        return 'technology';
-      case 'sports':
-        return 'sports';
-      case 'entertainment':
-        return 'entertainment';
-      case 'health':
-        return 'health';
-      case 'science':
-        return 'science';
-
-    // NewsAPI doesn't have politics/culture
-      case 'politics':
-      case 'culture':
-        return 'general';
-
-      default:
-        return 'general';
-    }
-  }
+// ============================================================
+// CATEGORY NAME
+// ============================================================
 
   String _getCategoryName() {
     final category = _getCategoryId();
@@ -527,38 +529,60 @@ class _SourcesScreenState extends State<SourcesScreen> {
     switch (category) {
       case 'business':
         return 'BUSINESS';
+
       case 'technology':
         return 'TECHNOLOGY';
+
       case 'sports':
         return 'SPORTS';
+
       case 'entertainment':
         return 'ENTERTAINMENT';
+
       case 'health':
         return 'HEALTH';
+
       case 'science':
         return 'SCIENCE';
+
       default:
         return 'GENERAL';
     }
   }
 
-  // ================= SOURCE SHORT NAME =================
+// ============================================================
+// CATEGORY CONVERSION
+// ============================================================
 
-  String _getSourceShortName(String name) {
-    if (name.length <= 12) {
-      return name.toUpperCase();
+  String _convertCategoryToApiValue(String category) {
+    switch (category.toLowerCase()) {
+      case 'general':
+        return 'general';
+
+      case 'business':
+        return 'business';
+
+      case 'technology':
+        return 'technology';
+
+      case 'sports':
+        return 'sports';
+
+      case 'entertainment':
+        return 'entertainment';
+
+      case 'health':
+        return 'health';
+
+      case 'science':
+        return 'science';
+
+      case 'politics':
+      case 'culture':
+        return 'general';
+
+      default:
+        return 'general';
     }
-
-    final words = name.split(' ');
-
-    if (words.length >= 2) {
-      return '${words.first}\n${words.sublist(1).join(' ')}'
-          .toUpperCase();
-    }
-
-    return name.substring(
-      0,
-      name.length > 12 ? 12 : name.length,
-    ).toUpperCase();
   }
 }

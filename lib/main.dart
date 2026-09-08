@@ -2,19 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'screens/splash_screen.dart';
+import 'screens/home_screen.dart';
+
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   final prefs = await SharedPreferences.getInstance();
 
-  final bool isDarkMode = prefs.getBool('isDarkMode') ?? false;
-  final String languageCode = prefs.getString('languageCode') ?? 'en';
+  final bool isDarkMode =
+      prefs.getBool('isDarkMode') ?? false;
+
+  final String languageCode =
+      prefs.getString('languageCode') ?? 'en';
+
+  final bool onboardingCompleted =
+      prefs.getBool('onboardingCompleted') ?? false;
 
   runApp(
     MyApp(
       isDarkMode: isDarkMode,
       languageCode: languageCode,
+      onboardingCompleted: onboardingCompleted,
     ),
   );
 }
@@ -22,11 +32,13 @@ void main() async {
 class MyApp extends StatefulWidget {
   final bool isDarkMode;
   final String languageCode;
+  final bool onboardingCompleted;
 
   const MyApp({
     super.key,
     required this.isDarkMode,
     required this.languageCode,
+    required this.onboardingCompleted,
   });
 
   @override
@@ -72,7 +84,8 @@ class _MyAppState extends State<MyApp> {
 
       title: 'VOX',
 
-      themeMode: isDarkMode ? ThemeMode.dark : ThemeMode.light,
+      themeMode:
+      isDarkMode ? ThemeMode.dark : ThemeMode.light,
 
       theme: ThemeData(
         brightness: Brightness.light,
@@ -90,7 +103,8 @@ class _MyAppState extends State<MyApp> {
 
       darkTheme: ThemeData(
         brightness: Brightness.dark,
-        scaffoldBackgroundColor: const Color(0xFF0F0F0F),
+        scaffoldBackgroundColor:
+        const Color(0xFF0F0F0F),
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color(0xFF5CC8E8),
           brightness: Brightness.dark,
@@ -109,7 +123,18 @@ class _MyAppState extends State<MyApp> {
         Locale('ar'),
       ],
 
-      home: const SplashScreen(),
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+
+      home: widget.onboardingCompleted
+          ? HomeScreen(
+        onThemeChanged: changeTheme,
+        onLanguageChanged: changeLanguage,
+      )
+          : const SplashScreen(),
     );
   }
 }

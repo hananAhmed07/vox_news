@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-import 'source_screen.dart';
+import 'home_screen.dart';
 
 class OnboardingScreen3 extends StatelessWidget {
   final Set<String> selectedCategories;
@@ -10,6 +11,29 @@ class OnboardingScreen3 extends StatelessWidget {
     required this.selectedCategories,
   });
 
+  Future<void> completeOnboarding(BuildContext context) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    await prefs.setBool('onboardingCompleted', true);
+
+    await prefs.setStringList(
+      'selectedCategories',
+      selectedCategories.toList(),
+    );
+
+    if (!context.mounted) return;
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => HomeScreen(
+          onThemeChanged: (_) async {},
+          onLanguageChanged: (_) async {},
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,7 +41,6 @@ class OnboardingScreen3 extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-// ================= HEADER =================
             Container(
               height: 62,
               width: double.infinity,
@@ -25,7 +48,6 @@ class OnboardingScreen3 extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 18),
               child: Row(
                 children: [
-// Menu + Logo
                   Row(
                     children: [
                       const Icon(
@@ -33,9 +55,7 @@ class OnboardingScreen3 extends StatelessWidget {
                         color: Color(0xFF0F0F0F),
                         size: 28,
                       ),
-
                       const SizedBox(width: 10),
-
                       Container(
                         width: 32,
                         height: 32,
@@ -51,10 +71,7 @@ class OnboardingScreen3 extends StatelessWidget {
                       ),
                     ],
                   ),
-
                   const Spacer(),
-
-// HOME
                   const Text(
                     'HOME',
                     style: TextStyle(
@@ -64,17 +81,14 @@ class OnboardingScreen3 extends StatelessWidget {
                       letterSpacing: 1.2,
                     ),
                   ),
-
                   const Spacer(),
-
-// Profile Circle
                   Container(
                     width: 38,
                     height: 38,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       border: Border.all(
-                        color: const Color(0xFF0F0F0F),
+                        color: Color(0xFF0F0F0F),
                         width: 1.5,
                       ),
                     ),
@@ -89,8 +103,6 @@ class OnboardingScreen3 extends StatelessWidget {
                 ],
               ),
             ),
-
-// ================= IMAGE =================
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(
@@ -110,8 +122,6 @@ class OnboardingScreen3 extends StatelessWidget {
                 ),
               ),
             ),
-
-// ================= BOTTOM CONTENT =================
             Container(
               width: double.infinity,
               padding: const EdgeInsets.fromLTRB(
@@ -122,7 +132,6 @@ class OnboardingScreen3 extends StatelessWidget {
               ),
               child: Column(
                 children: [
-// ================= TITLE =================
                   const Text(
                     'CHOOSE YOUR SOURCE',
                     textAlign: TextAlign.center,
@@ -133,9 +142,7 @@ class OnboardingScreen3 extends StatelessWidget {
                       letterSpacing: 0.5,
                     ),
                   ),
-
                   const SizedBox(height: 10),
-// ================= DESCRIPTION =================
                   const Text(
                     'Choose the news sources you trust '
                         'and stay connected with what matters.',
@@ -147,10 +154,7 @@ class OnboardingScreen3 extends StatelessWidget {
                       height: 1.4,
                     ),
                   ),
-
                   const SizedBox(height: 18),
-
-// ================= PAGE INDICATORS =================
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -162,9 +166,7 @@ class OnboardingScreen3 extends StatelessWidget {
                           shape: BoxShape.circle,
                         ),
                       ),
-
                       const SizedBox(width: 8),
-
                       Container(
                         width: 8,
                         height: 8,
@@ -173,9 +175,7 @@ class OnboardingScreen3 extends StatelessWidget {
                           shape: BoxShape.circle,
                         ),
                       ),
-
                       const SizedBox(width: 8),
-
                       Container(
                         width: 8,
                         height: 8,
@@ -186,30 +186,22 @@ class OnboardingScreen3 extends StatelessWidget {
                       ),
                     ],
                   ),
-
                   const SizedBox(height: 18),
-
-// ================= GET STARTED =================
                   SizedBox(
                     width: double.infinity,
                     height: 48,
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => SourcesScreen(
-                              selectedCategories: selectedCategories,
-                            ),
-                          ),
-                        );
+                        completeOnboarding(context);
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF5CC8E8),
+                        backgroundColor:
+                        const Color(0xFF5CC8E8),
                         foregroundColor: Colors.white,
                         elevation: 0,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius:
+                          BorderRadius.circular(12),
                         ),
                       ),
                       child: const Text(
@@ -223,8 +215,6 @@ class OnboardingScreen3 extends StatelessWidget {
                       ),
                     ),
                   ),
-
-
                 ],
               ),
             ),

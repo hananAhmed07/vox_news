@@ -3,10 +3,18 @@ import 'package:flutter/material.dart';
 import '../abdulrahman/categories_screen.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  final Future<void> Function(bool) onThemeChanged;
+  final Future<void> Function(String) onLanguageChanged;
+
+  const HomeScreen({
+    super.key,
+    required this.onThemeChanged,
+    required this.onLanguageChanged,
+  });
 
   @override
   Widget build(BuildContext context) {
+
     final categories = [
       'General',
       'Business',
@@ -61,41 +69,71 @@ class HomeScreen extends StatelessWidget {
 
               const Divider(),
 
+// ================= HOME =================
               ListTile(
                 leading:
                 const Icon(Icons.home_outlined),
-                title: const Text('Home'),
+                title: Text('Home'),
                 onTap: () {
                   Navigator.pop(context);
                 },
               ),
 
+// ================= LANGUAGE =================
               ListTile(
                 leading:
                 const Icon(Icons.language),
-                title:
-                const Text('English / العربية'),
-                onTap: () {
-                  Navigator.pop(context);
+                title: Text('English / العربية'),
+                onTap: () async {
+                  final currentLanguage =
+                      Localizations.localeOf(context)
+                          .languageCode;
+
+                  final newLanguage =
+                  currentLanguage == 'en'
+                      ? 'ar'
+                      : 'en';
+
+                  await onLanguageChanged(
+                    newLanguage,
+                  );
+
+                  if (context.mounted) {
+                    Navigator.pop(context);
+                  }
                 },
               ),
 
+// ================= THEME =================
               ListTile(
-                leading: const Icon(
-                  Icons.dark_mode_outlined,
+                leading: Icon(
+                  Theme.of(context).brightness ==
+                      Brightness.dark
+                      ? Icons.light_mode_outlined
+                      : Icons.dark_mode_outlined,
                 ),
-                title: const Text(
-                  'Light / Dark Mode',
+                title: Text(
+                  Theme.of(context).brightness ==
+                      Brightness.dark
+                      ? 'Light Mode'
+                      : 'Dark Mode',
                 ),
-                onTap: () {
-                  Navigator.pop(context);
+                onTap: () async {
+                  final isDark =
+                      Theme.of(context).brightness ==
+                          Brightness.dark;
+
+                  await onThemeChanged(!isDark);
+
+                  if (context.mounted) {
+                    Navigator.pop(context);
+                  }
                 },
               ),
             ],
           ),
         ),
       ),
-
 // ================= BODY =================
       body: SafeArea(
         child: SingleChildScrollView(
@@ -131,7 +169,8 @@ class HomeScreen extends StatelessWidget {
                   Container(
                     width: 42,
                     height: 42,
-                    padding: const EdgeInsets.all(8),
+                    padding:
+                    const EdgeInsets.all(8),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius:
@@ -144,6 +183,7 @@ class HomeScreen extends StatelessWidget {
                   ),
 
                   const SizedBox(width: 10),
+
                   Text(
                     'VOX',
                     style: TextStyle(
@@ -255,6 +295,7 @@ class HomeScreen extends StatelessWidget {
               ),
 
               const SizedBox(height: 25),
+
 // ================= NEWS CARDS =================
               _newsCard(
                 context,
@@ -299,7 +340,6 @@ class HomeScreen extends StatelessWidget {
   }
 
 // ================= NEWS CARD =================
-
   Widget _newsCard(
       BuildContext context, {
         required String title,
@@ -326,7 +366,6 @@ class HomeScreen extends StatelessWidget {
           crossAxisAlignment:
           CrossAxisAlignment.start,
           children: [
-// Image
             Image.network(
               image,
               width: double.infinity,
@@ -391,6 +430,7 @@ class HomeScreen extends StatelessWidget {
                       ),
 
                       const Spacer(),
+
                       Text(
                         time,
                         style: TextStyle(
