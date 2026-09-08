@@ -17,10 +17,10 @@ class NewsListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final language =
+        Localizations.localeOf(context).languageCode;
     return BlocProvider(
       create: (context) {
-        final language =
-            Localizations.localeOf(context).languageCode;
 
         return NewsCubit()
           ..getNewsBySourceId(
